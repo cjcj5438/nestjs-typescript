@@ -74,6 +74,9 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 
   Nest is [MIT licensed](LICENSE).
   
+  update
+  nest update --tag latest --force   # nest 版本跟新升级
+  
  branch
     master 合并分支
     develop 模版分支。其他分支提交之后。要退回这个分支。写单独的功能
