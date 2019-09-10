@@ -9,7 +9,7 @@ export class DemoFilter<T> implements ExceptionFilter {
     const status = exception.getStatus(); // 这里报错要注意是范性导入的参数问题
     response.status(status).json({
       statusCode: status,
-      pash: request.url,
+      path: request.url,
     });
   }
 }
