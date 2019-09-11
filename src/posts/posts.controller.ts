@@ -1,6 +1,6 @@
 import {
   Body,
-  Controller,
+  Controller, ForbiddenException,
   Get,
   HttpException,
   HttpStatus,
@@ -8,7 +8,7 @@ import {
   ParseIntPipe,
   Post,
   Put, SetMetadata,
-  UseFilters, UseGuards,
+  UseFilters, UseGuards, UseInterceptors,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
@@ -16,10 +16,14 @@ import { DemoService } from './providers/demo/demo.service';
 import { CreatePostDto } from './post.dto';
 import { DemoFilter } from '../core/filters/demo.filter';
 import { DemoAuthGuard } from '../core/guards/demo-auth.guard';
-import { Roles } from '../core/decorators/roles.decorator';
+// import { Roles } from '../core/decorators/roles.decorator';
+import { LoggingInterceptor } from '../core/interceptors/logging.interceptor';
+import { TransformInterceptor } from '../core/interceptors/transform.interceptor';
+import { ErrorsInterceptor } from '../core/interceptors/errors.interceptor';
 
 @Controller('posts')
 // @UseGuards(DemoAuthGuard)  // 守卫可以添加到控制。全局，单个方法。多个守卫用逗号间隔
+// @UseInterceptors(LoggingInterceptor) // 在类上添加拦截器
 export class PostsController {
   private readonly demoService;
 
@@ -29,6 +33,7 @@ export class PostsController {
   }
 
   @Get()
+  @UseInterceptors(TransformInterceptor)
   index() {
     return this.demoService.findAll();
   }
@@ -52,8 +57,10 @@ export class PostsController {
 
   @Put()
   @UseFilters(DemoFilter)  // 可以加到控制器的方法里。 也可以加到全局的，也可以加到控制器里
+  @UseInterceptors(ErrorsInterceptor)
   puts() {
+    throw new ForbiddenException();
     // 错误状态码有很多
-    throw new HttpException('没有权限', HttpStatus.FORBIDDEN);
+    // throw new HttpException('没有权限', HttpStatus.FORBIDDEN);
   }
 }
