@@ -7,6 +7,7 @@ nest generate middleware demo core/middleware  在core 目录下创建一个midd
 nest generate interface post post/interface   创建一个接口
 nest generate guard demoAuth core/guards 守卫 作用是决定请求是否可以通过，守卫会在中间件以后，拦截器和管道之前执行
 nest generate decorator roles core/decorators 自定义装饰器
+nest generate pipe demo core/pipes 创建一个自定义管道  
 
 Pipes 管道：
     npm install class-transformer class-validator --save 管道可以依赖的两个包

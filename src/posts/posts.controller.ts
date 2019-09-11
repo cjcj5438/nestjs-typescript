@@ -20,6 +20,8 @@ import { DemoAuthGuard } from '../core/guards/demo-auth.guard';
 import { LoggingInterceptor } from '../core/interceptors/logging.interceptor';
 import { TransformInterceptor } from '../core/interceptors/transform.interceptor';
 import { ErrorsInterceptor } from '../core/interceptors/errors.interceptor';
+import { User } from '../core/decorators/user.decorator';
+import { DemoPipe } from '../core/pipes/demo.pipe';
 
 @Controller('posts')
 // @UseGuards(DemoAuthGuard)  // 守卫可以添加到控制。全局，单个方法。多个守卫用逗号间隔
@@ -39,7 +41,7 @@ export class PostsController {
   }
 
   @Get(':id')
-  show(@Param('id', ParseIntPipe) id) {
+  show(@Param('id', ParseIntPipe, DemoPipe) id) {
     console.log(typeof id);
     // 原来的id 是string 类型。使用了管道类型转换ParseIntPipe变成了number类型
     return {
@@ -51,7 +53,9 @@ export class PostsController {
   @UsePipes(ValidationPipe)
   @SetMetadata('roles', ['member']) // 附加一些数据，可以让守卫得到
   // @Roles('member') // 自定义装饰器  和上面的方式一样
-  store(@Body() post: CreatePostDto) {
+  // user 加载 middleware 里面
+  store(@Body() post: CreatePostDto, @User('demo') user) {
+    console.log('user::::', user);
     return this.demoService.create(post);
   }
 
