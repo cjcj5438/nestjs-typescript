@@ -1,4 +1,6 @@
-/* date transfer object DTO */
-export class CreatePostDTO {
+import { IsString } from 'class-validator';
+
+export class CreatePostDto {
+  @IsString()
   readonly title: string;
 }
