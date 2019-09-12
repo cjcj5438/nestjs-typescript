@@ -1,16 +1,22 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Post {
   @PrimaryGeneratedColumn()
   id: number;
-  @Column()
-  title: string;
-  @CreateDateColumn()
-  created: Date;
-  @Column('longtext')
-  body: string;
-  @CreateDateColumn()
-  updated: Date;
 
+  @Column({ length: 500 })
+  name: string;
+
+  @Column('text')
+  description: string;
+
+  @Column()
+  filename: string;
+
+  @Column('int')
+  views: number;
+
+  @Column()
+  isPublished: boolean;
 }
