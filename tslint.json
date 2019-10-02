@@ -13,7 +13,11 @@
     "interface-name": [false],
     "arrow-parens": false,
     "object-literal-sort-keys": false,
+<<<<<<< HEAD
     "no-console": false
+=======
+    "no-console":false
+>>>>>>> 3359d1389ba57880bddf3e10d6b31be4113d9c12
   },
   "rulesDirectory": []
 }
