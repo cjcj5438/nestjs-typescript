@@ -20,19 +20,11 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
-<<<<<<< HEAD
     "@nestjs/common": "^6.7.1",
     "@nestjs/core": "^6.7.1",
     "@nestjs/platform-express": "^6.7.1",
     "@nestjs/typeorm": "^6.1.3",
     "mysql": "^2.17.1",
-=======
-    "@nestjs/common": "^6.0.0",
-    "@nestjs/core": "^6.0.0",
-    "@nestjs/platform-express": "^6.0.0",
-    "class-transformer": "^0.2.3",
-    "class-validator": "^0.10.0",
->>>>>>> 3359d1389ba57880bddf3e10d6b31be4113d9c12
     "reflect-metadata": "^0.1.12",
     "rimraf": "^2.6.2",
     "rxjs": "^6.3.3",
