@@ -38,4 +38,32 @@ export class PostService {
   async destroy(id: string) {
     return await this.postRepository.delete(id);
   }
+
+  // 保存用户投票关系 的关系
+  async vote(user: User, id: number) {
+    await this.postRepository
+      .createQueryBuilder()// 创建一个查询空间器
+      .relation(User, 'voted')// 设置关系  关系就是User实体上面的 voted
+      .of(user)// 给他的关系是用户实体或者用户的id
+      .add(id); // 可以是post实体可以是post id
+  }
+
+  // 保存用户投票关系 的关系
+  async unVote(user: User, id: number) {
+    await this.postRepository
+      .createQueryBuilder()// 创建一个查询空间器
+      .relation(User, 'voted')// 设置关系  关系就是User实体上面的 voted
+      .of(user)// 给他的关系是用户实体或者用户的id
+      .remove({ id }); // 可以是post实体可以是post id
+  }
+
+  // 文章投过票的用户名
+  async liked(id: number) {
+    return await this.postRepository
+      .createQueryBuilder()// 查询构建器
+      .relation(Post, 'liked') // 关系
+      .of(id)// 然后把id交给这个方法
+      .loadMany();
+    // findOne(id, { relations: ['voted'] });
+  }
 }

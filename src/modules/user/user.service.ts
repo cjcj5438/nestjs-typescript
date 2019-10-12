@@ -50,4 +50,11 @@ export class UserService {
   async findByName(name: string) {
     return await this.userRepository.findOne({ name });
   }
+
+  // 用户投过票的文章的方法
+  async liked(id: number) {
+    return await this.userRepository.findOne(id, {
+      relations: ['voted', 'voted.user'],
+    });
+  }
 }

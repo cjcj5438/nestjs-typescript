@@ -1,4 +1,4 @@
-import { Body, ClassSerializerInterceptor, Controller, Get, Param, Post, Put, UseInterceptors } from '@nestjs/common';
+import { Body, ClassSerializerInterceptor, Controller, Get, Param, ParseIntPipe, Post, Put, UseInterceptors } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UpdatePasswordDto, UserDto } from './user.dto';
 
@@ -18,9 +18,16 @@ export class UserController {
   async show(@Param('id') id: string) {
     return await this.userService.show(id);
   }
+
   @Put(':id/password')
   @UseInterceptors(ClassSerializerInterceptor) // nest自带的过滤器  自动剥离数据
   async updatePassword(@Param('id') id: string, @Body() data: UpdatePasswordDto) {
     return await this.userService.updatePassword(id, data);
+  }
+
+  @Get(':id/liked')
+  @UseInterceptors(ClassSerializerInterceptor)
+  async liked(@Param('id', ParseIntPipe) id: number) {
+    return await this.userService.liked(id);
   }
 }

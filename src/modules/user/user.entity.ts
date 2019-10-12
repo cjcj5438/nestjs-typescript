@@ -1,4 +1,14 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, BeforeInsert, BeforeUpdate, OneToMany } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+  BeforeInsert,
+  BeforeUpdate,
+  OneToMany,
+  ManyToMany, JoinTable,
+} from 'typeorm';
 import { Exclude } from 'class-transformer';
 import * as bcrypt from 'bcrypt';
 import { Post } from '../post/post.entity';
@@ -27,6 +37,12 @@ export class User {
    */
   @OneToMany(type => Post, post => post.user)
   posts: Post[];
+  /**
+   * 多对多的场景。逻辑上要有一个中间表
+   */
+  @ManyToMany(type => Post, post => post.liked)
+  @JoinTable()
+  voted: [];
 
   @BeforeInsert()
   @BeforeUpdate()

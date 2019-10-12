@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, ManyToMany } from 'typeorm';
 import { User } from '../user/user.entity';
 
 @Entity()
@@ -24,4 +24,9 @@ export class Post {
    */
   @ManyToOne(type => User, user => user.posts)
   user: User;
+  /**
+   * 多对多
+   */
+  @ManyToMany(type => User, user => user.voted)
+  liked: [];
 }

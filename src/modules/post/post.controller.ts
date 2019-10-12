@@ -1,4 +1,16 @@
-import { Body, ClassSerializerInterceptor, Controller, Delete, Get, Param, Post, Put, UseGuards, UseInterceptors } from '@nestjs/common';
+import {
+  Body,
+  ClassSerializerInterceptor,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseIntPipe,
+  Post,
+  Put,
+  UseGuards,
+  UseInterceptors,
+} from '@nestjs/common';
 import { PostService } from './post.service';
 import { PostDto } from './post.dto';
 import { AuthGuard } from '@nestjs/passport';
@@ -41,5 +53,23 @@ export class PostController {
   @Delete(':id')
   async destroy(@Param('id') id: string) {
     return await this.postService.destroy(id);
+  }
+
+  @Post(':id/vote')
+  @UseGuards(AuthGuard())
+  async vote(@Param('id', ParseIntPipe) id: number, @User() user: UserEntity) {
+    return await this.postService.vote(user, id);
+  }
+
+  @Delete(':id/vote')
+  @UseGuards(AuthGuard())
+  async unVote(@Param('id', ParseIntPipe) id: number, @User() user: UserEntity) {
+    return await this.postService.unVote(user, id);
+  }
+
+  @Get(':id/liked')
+  @UseInterceptors(ClassSerializerInterceptor)
+  async liked(@Param('id', ParseIntPipe) id: number) {
+    return await this.postService.liked(id);
   }
 }
