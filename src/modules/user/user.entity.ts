@@ -1,6 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, BeforeInsert, BeforeUpdate } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, BeforeInsert, BeforeUpdate, OneToMany } from 'typeorm';
 import { Exclude } from 'class-transformer';
 import * as bcrypt from 'bcrypt';
+import { Post } from '../post/post.entity';
 
 @Entity()
 export class User {
@@ -19,12 +20,20 @@ export class User {
 
   @UpdateDateColumn()
   updated: Date;
+  /**
+   * 描述一对多的关系
+   * args：type=》post 返回的关联实体
+   * args：post=》post.user 描述反响的关联关系
+   */
+  @OneToMany(type => Post, post => post.user)
+  posts: Post[];
 
   @BeforeInsert()
   @BeforeUpdate()
   async hashPassword() {
     this.password = await bcrypt.hash(this.password, 12);
   }
+
   async comparePassword(password: string) {
     return await bcrypt.compare(password, this.password);
   }

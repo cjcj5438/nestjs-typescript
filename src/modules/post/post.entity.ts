@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne } from 'typeorm';
+import { User } from '../user/user.entity';
 
 @Entity()
 export class Post {
@@ -16,4 +17,11 @@ export class Post {
 
   @UpdateDateColumn()
   updated: Date;
+  /**
+   * 多对一的关系【多对一和一对多的关系是成对出现的】
+   * args：链接的是User实体
+   * args：反向指向posts
+   */
+  @ManyToOne(type => User, user => user.posts)
+  user: User;
 }

@@ -21,7 +21,6 @@ export class AuthController {
   @Get('test')
   @UseGuards(AuthGuard())
   async authTest(@User() user) {
-    console.log('user:', user);
     return {
       message: 'ok',
     };

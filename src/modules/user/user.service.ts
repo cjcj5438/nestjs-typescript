@@ -23,7 +23,9 @@ export class UserService {
 
   // 查找用户
   async show(id: string) {
-    const entity = await this.userRepository.findOne(id);
+    const entity = await this.userRepository.findOne(id, {
+      relations: ['posts'],
+    });
     if (!entity) {
       throw new NotFoundException('没有找到用户');
     }

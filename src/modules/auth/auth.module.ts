@@ -6,20 +6,28 @@ import { AuthService } from './auth.service';
 import { UserModule } from '../user/user.module';
 import { JwtStrategy } from './strategies/jwt.strategy';
 
+const passportModule = PassportModule.register({
+  defaultStrategy: 'jwt',
+});
+
 @Module({
   imports: [
     forwardRef(() => UserModule),
     JwtModule.register({
       secretOrPrivateKey: 'qHqPHVPasjfHDCrcX7Ao7x5O5W098RU3i6lloVgWZFY=',
       signOptions: {
-        expiresIn: '12h'
-      }
+        expiresIn: '12h',
+      },
     }),
     PassportModule.register({
-      defaultStrategy: 'jwt'
-    })
+      defaultStrategy: 'jwt',
+    }),
+  ],
+  exports: [
+    passportModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy]
+  providers: [AuthService, JwtStrategy],
 })
-export class AuthModule { }
+export class AuthModule {
+}
