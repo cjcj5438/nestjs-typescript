@@ -1,9 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Query } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { Post } from './post.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PostDto } from './post.dto';
 import { User } from '../user/user.entity';
+import { ListOptionsInterface } from '../../core/interfaces/list-options.interface';
 
 @Injectable()
 export class PostService {
@@ -18,12 +19,20 @@ export class PostService {
     return entity;
   }
 
-  async index() {
-    const entities = await this.postRepository.find({
-      // 在返回的数据中想包含用户数据，可以这么写
-      relations: ['user'],
-    });
-    return entities;
+  async index(options: ListOptionsInterface) {
+    const { categories } = options;
+    const queryBuilder = await this.postRepository.createQueryBuilder('post'); // 创建一个查询器
+    queryBuilder.leftJoinAndSelect('post.user', 'user'); // 修改查询别名
+    queryBuilder.leftJoinAndSelect('post.category', 'category');
+    if (categories) {
+      queryBuilder.where('category.alias IN (:...categories)', { categories });
+    }
+    return queryBuilder.getMany();
+    // const entities = await this.postRepository.find({
+    //   // 在返回的数据中想包含用户数据，可以这么写
+    //   relations: ['user', 'category'],
+    // });
+    // return entities;
   }
 
   async show(id: string) {

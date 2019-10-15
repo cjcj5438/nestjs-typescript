@@ -7,7 +7,7 @@ import {
   Param,
   ParseIntPipe,
   Post,
-  Put,
+  Put, Query,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
@@ -16,13 +16,15 @@ import { PostDto } from './post.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { User } from 'src/core/decorators/user.decorator'; // 参数装饰器
 import { User as UserEntity } from '../user/user.entity';
+import { ListOptions } from '../../core/decorators/list-options.decorator';
+import { ListOptionsInterface } from '../../core/interfaces/list-options.interface';
 
 @Controller('posts')
 export class PostController {
   constructor(private readonly postService: PostService) {
   }
 
-  @Post()
+  @Post ()
   @UseGuards(AuthGuard())
   // 发布新东西，需要储存下用户相关联的东西
   //
@@ -32,8 +34,8 @@ export class PostController {
 
   @Get()
   @UseInterceptors(ClassSerializerInterceptor) // 添加拦截器。过滤掉密码
-  async index() {
-    return await this.postService.index();
+  async index(@ListOptions() options: ListOptionsInterface) {
+    return await this.postService.index(options);
   }
 
   @Get(':id')
